@@ -1,0 +1,128 @@
+html {
+
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+.box .image {
+    top: 0;
+    left: 0;
+}
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+output, input { 
+    display: block;
+}
+
+.nav-user {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%; /* Занимать всю доступную ширину */
+}
+
+/* Чтобы сделать изображение более подходящим размером, вы можете применить стили к img. */
+.nav-user img {
+    width: 40px; /* Измените этот размер на подходящий вам. */
+    height: 40px;
+}
+.navbar-brand,
+.navbar-nav {
+    /*background-color: #2E2EFE;*/ /* Замените "blue" на желаемый синий цвет */
+    /*color: white;*/ /* Замените "white" на цвет текста, который вы хотите использовать */
+}
+
+.nav-link {
+    /*color: white;*/ /* Замените "white" на цвет текста, который вы хотите использовать */
+}
+
+div {
+}
+
+.blog-post {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    
+    border: 1px solid #000;
+    margin: 15px;
+    /*  'align-self: flex-end;'  'float: right;' */
+}
+
+.post-image {
+    position: relative;
+    float: right;
+    width: auto;
+    padding: 10px;
+    max-height: 200px;
+    z-index: 2; 
+
+}
+
+.left-part {
+    padding: 10px;
+}
+
+.right-part {
+    position: relative;
+    text-align: center; 
+    display: inline-block; 
+}
+
+.prev-button,
+.next-button {
+    position: absolute;
+    padding: 10px;
+    top: 100px;
+    width: 15%;
+    height: 15%;
+    border: none;
+    cursor: pointer;
+    transform: translateY(-50%);
+    z-index: 9999; /* Установите z-index, чтобы кнопки находились поверх изображения */
+}
+
+.prev-button {
+    background-image: url('/images/prevButton.png');
+    background-size: 30px 30px;
+    background-repeat: no-repeat;
+    background-color: transparent; /* Сделать фон прозрачным */
+    border: none; /* Убрать границу кнопки */
+    position: absolute;
+    left: 10px;
+}
+
+.next-button {
+    background-image: url('/images/nextButton.png');
+    background-size: 30px 30px;
+    background-color: transparent; /* Сделать фон прозрачным */
+    border: none; /* Убрать границу кнопки */
+    background-repeat: no-repeat;
+    position: absolute;
+    right: 10px;
+}
+
+.prev-button:hover {
+    opacity: 1;
+    background-image: url('/images/prevButtonBackground.png');
+    background-color: transparent; /* Сделать фон прозрачным */
+    border: none; /* Убрать границу кнопки */
+    background-repeat: no-repeat;
+}
+.next-button:hover {
+    opacity: 1;
+    background-image: url('/images/nextButtonBackground.png');
+    background-color: transparent; /* Сделать фон прозрачным */
+    border: none; /* Убрать границу кнопки */
+    background-repeat: no-repeat;
+}

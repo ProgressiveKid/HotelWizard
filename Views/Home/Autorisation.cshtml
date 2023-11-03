@@ -1,0 +1,51 @@
+﻿
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Вход</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Ваши дополнительные стили здесь -->
+    <style>
+        /* Добавляем отступ снизу для кнопки */
+        .btn-login {
+            margin-top: 20px;
+        }
+
+        /* Подсветка для неверных полей ввода */
+        .form-control.is-invalid {
+            border-color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-6">
+                <h2 class="text-center mb-4">Авторизация</h2>
+                <form asp-page-handler="Login" method="post" class="needs-validation" novalidate>
+                    <div class="form-group">
+                        <label for="Username">Имя пользователя:</label>
+                        <input type="text" class="form-control" id="exampleFormControlInput1" style="border-color: deepskyblue;">
+                        <div class="invalid-feedback">
+                            Пожалуйста, введите имя пользователя.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Password">Пароль:</label>
+                        <input type="password" id="Password" name="Password" style="border-color: deepskyblue;" class="form-control" required />
+                        <div class="invalid-feedback">
+                            Пожалуйста, введите пароль.
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-login btn-block">Войти</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- Ваши дополнительные скрипты здесь -->
+</body>
+</html>
