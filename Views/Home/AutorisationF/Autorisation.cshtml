@@ -33,14 +33,14 @@
                 <form asp-page-handler="Login" method="post" class="needs-validation" novalidate>
                     <div class="form-group">
                         <label for="Username">Почта пользователя:</label>
-                        <input id="mailLogin" type="text" class="form-control" placeholder="example&#64mail.ru" style="border-color: deepskyblue;">
+                        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="example&#64mail.ru" style="border-color: deepskyblue;">
                         <div class="invalid-feedback">
                             Пожалуйста, введите имя пользователя.
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="Password">Пароль:</label>
-                        <input id = "password" type="password"  name="Password" style="border-color: deepskyblue;" class="form-control" required />
+                        <input type="password" id="Password" name="Password" style="border-color: deepskyblue;" class="form-control" required />
                         <div class="invalid-feedback">
                             Пожалуйста, введите пароль.
                         </div>
@@ -53,17 +53,6 @@
                                 // Указываем элемент кнопки по ее id
                                 $('#loginButton').click(function () {
                                     // Ваш код, который будет выполняться при нажатии на кнопку
-                                    var mailLoginValue = $('#mailLogin').val();
-                                    var passwordValue = $('#password').val();
-                                    $.post({
-                                        url: '/HomeController/Autorisation', // Замените на фактический путь к вашему методу
-                                        data: { mailLoginParam: mailLoginValue, password: passwordValue },
-                                        success: function (response) {
-                                            // Обработка успешного ответа
-                                            console.log(response);
-                                        }
-                                        
-                                    });
                                     alert('Логирование');
                                 });
                             });

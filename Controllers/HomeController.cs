@@ -3,6 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using Microsoft.Extensions.Localization;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HotelWizard.Controllers
 {
@@ -89,12 +93,28 @@ namespace HotelWizard.Controllers
 
         public async Task<IActionResult> Autorisation()
         {
-            var rooms = await db.Rooms.ToListAsync();
-            return View();
-        }
+			if (User.Identity.IsAuthenticated)
+			{
+				// Ваш код, который будет выполнен, если пользователь авторизован
+				var rooms = await db.Rooms.ToListAsync();
+				return View();
+			}
+			else
+			{
+				// Ваш код, который будет выполнен, если пользователь не авторизован
+				return View("Autorisation");
+				// Пример перенаправления на страницу входа
+			}
+		}
+
+        [HttpPost]
+		public async Task<IActionResult> Autorisation(string mailLoginParam, string password)
+		{
+			return RedirectToAction("Index", "Home");
+		}
 
 
-        public IActionResult Privacy()
+		public IActionResult Privacy()
         {
             return View();
         }

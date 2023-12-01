@@ -12,7 +12,7 @@
 </head>
 <body>
     <input type="text" name="datefilter" placeholder="Выберите дату бронирования" value="" />
-    <br></>
+    <br></>     
     <output name="labelDays"></output>
     <div class="box"><img class="image" src="/images/Landing/head1.jpeg"></div>
     <div id="blog-container"> 
@@ -22,7 +22,7 @@
     <script type="text/javascript">
         class Room {
             constructor(id, number, type, description, pricePerNight, imageArray) {
-                this.id = id;
+                this.id = id;0
                 this.number = number;
                 this.type = type;
                 this.description = description;
@@ -138,7 +138,7 @@
                                     }
                                     // Ваша логика для смены фотографии на следующую
                                 });
-                                    makeOrder.click(function () {
+                                makeOrder.click(function () {
                                     $.ajax({
                                         url: "@Url.Action("MakeOrder")",
                                         type: 'POST',
