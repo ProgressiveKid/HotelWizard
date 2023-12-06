@@ -3,28 +3,32 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using Microsoft.Extensions.Localization;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication;
+using System.Globalization;
 using Microsoft.AspNetCore.Authorization;
 
 namespace HotelWizard.Controllers
 {
-    public class HomeController : Controller
+	public class HomeController : Controller
     {
         ApplicationContext db;
-        public HomeController(ApplicationContext context)
+        private readonly IStringLocalizer<HomeController> _localizer;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public HomeController(ApplicationContext context, IStringLocalizer<HomeController> localizer,
+         IHttpContextAccessor httpContextAccessor)
         {
             db = context;
+            _localizer = localizer;
+            _httpContextAccessor = httpContextAccessor;
+          
         }
+
 
         [HttpPost]
         public JsonResult GetData(string startDate1, string endDate1)
         {
             //Проверка по всем заказам на определенную дату
-            //TODO сделать так чтобы можно было бранировать на дату выселения предыдщуего человека
-            DateTime startDate = DateTime.Parse(startDate1);
-            DateTime endDate = DateTime.Parse(endDate1);
+            DateTime startDate = DateTime.ParseExact(startDate1, "dd.MM.yyyy", CultureInfo.InvariantCulture);
+            DateTime endDate = DateTime.ParseExact(endDate1, "dd.MM.yyyy", CultureInfo.InvariantCulture);
 
             var listOrders = db.DateBookeds.ToList();
 			var listRooms = db.Rooms
@@ -48,11 +52,11 @@ namespace HotelWizard.Controllers
                         isRoomAvailable = false;
                         break;
                     }
-
                 }
                 if (isRoomAvailable)
                 {
-					freeRooms.Add(room);
+                  
+                    freeRooms.Add(room);
                 }
 
             }
@@ -60,6 +64,7 @@ namespace HotelWizard.Controllers
         }
 
         [HttpPost]
+
 
         public JsonResult MakeOrder(string startDate1, string endDate1, int idRoom)
         {
@@ -82,36 +87,13 @@ namespace HotelWizard.Controllers
 
         }
 
-
-        public async Task<IActionResult> Index()
+		[Authorize]
+		public async Task<IActionResult> Index()
         {
             var rooms = await db.Rooms.ToListAsync();
-            ViewData["Rooms"] = rooms;
+            ViewData["Rooms"] = rooms;       
             return View();
         }
-
-
-        public async Task<IActionResult> Autorisation()
-        {
-			if (User.Identity.IsAuthenticated)
-			{
-				// Ваш код, который будет выполнен, если пользователь авторизован
-				var rooms = await db.Rooms.ToListAsync();
-				return View();
-			}
-			else
-			{
-				// Ваш код, который будет выполнен, если пользователь не авторизован
-				return View("Autorisation");
-				// Пример перенаправления на страницу входа
-			}
-		}
-
-        [HttpPost]
-		public async Task<IActionResult> Autorisation(string mailLoginParam, string password)
-		{
-			return RedirectToAction("Index", "Home");
-		}
 
 
 		public IActionResult Privacy()

@@ -1,20 +1,22 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using HotelWizard.Models;
 using Newtonsoft.Json;
+using System.Configuration;
 
 public class ApplicationContext : DbContext
 {
     public DbSet<Reservation> Reservations { get; set; } = null!;
-    public DbSet<Users> Guests { get; set; } = null!;
+    public DbSet<ModelUsers> Users { get; set; } = null!;
     public DbSet<Room> Rooms { get; set; } = null!;
     public DbSet<RoomImage> RoomImages { get; set; } = null!;
     public DbSet<DateBooked> DateBookeds { get; set; } = null!;
 
     public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
     {
-       // Database.EnsureDeleted();
-       // Database.EnsureCreated();
-    }
+		
+		// Database.EnsureDeleted();
+		// Database.EnsureCreated();
+	}
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

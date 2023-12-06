@@ -118,12 +118,18 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Welcome" xml:space="preserve">
-    <value>Здарова</value>
+    <value>Hello </value>
   </data>
   <data name="Необходимо установить язык" xml:space="preserve">
-    <value>Необходимо установить язык</value>
+    <value>Need to change language</value>
   </data>
   <data name="Обычный номер" xml:space="preserve">
-    <value>Коничюа</value>
+    <value>Default Room</value>
+  </data>
+  <data name="Сменить язык на английский" xml:space="preserve">
+    <value>English language</value>
+  </data>
+  <data name="Сменить язык на русский" xml:space="preserve">
+    <value>Russian LAnguage</value>
   </data>
 </root>

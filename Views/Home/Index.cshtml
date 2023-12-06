@@ -1,8 +1,15 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Localization;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@{
     ViewData["Title"] = "Home Page";
     string dateTime = DateTime.Now.ToString("MM/dd/yyyy");
     List<Room> RoomsDB = ViewData["Rooms"] as List<Room>;
+    string message = "";
+
 }
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,8 +18,9 @@
     <!-- Подключение jQuery -->
 </head>
 <body>
+
     <input type="text" name="datefilter" placeholder="Выберите дату бронирования" value="" />
-    <br></>     
+    <br>    
     <output name="labelDays"></output>
     <div class="box"><img class="image" src="/images/Landing/head1.jpeg"></div>
     <div id="blog-container"> 
@@ -22,7 +30,7 @@
     <script type="text/javascript">
         class Room {
             constructor(id, number, type, description, pricePerNight, imageArray) {
-                this.id = id;0
+                this.id = id;
                 this.number = number;
                 this.type = type;
                 this.description = description;
@@ -91,15 +99,18 @@
                         {
                             blogContainer.empty(); // Очистить содержимое контейнера
                             $.each(data, function (index, post) {
+
+
                                 var postElement = $("<div>").addClass("blog-post"); // Создайте элемент для поста и добавьте класс "blog-post"
                                 var index = 0;
+
 
                                 var leftPart = $("<div>").addClass("left-part");
                                 var rightPart = $("<div>").addClass("right-part");
                                 
                                 // Создайте элементы для заголовка, текста, информации и изображения, и вставьте данные
                                 var titleElement = $("<h2>").addClass("post-title").text(post.type);
-                                var textElement = $("<p>").addClass("post-text").text("Итоговая сумма " + post.pricePerNight*daysDiff + "$");
+                                var textElement = $("<p>").addClass("post-text").text("Итоговая сумма " +  post.pricePerNight*daysDiff + "$");
                                 var imageElement = $("<img>").attr("src", post.imageArray[index].image).addClass("post-image");
 
                                 var descriptionElement = $("<p>").addClass("post-description").text(post.description); // Добавлен класс "post-description"                                // Добавьте созданные элементы в элемент поста
@@ -114,6 +125,8 @@
                                 postElement.append(leftPart, rightPart);
                                 // Добавьте элемент поста в контейнер блога
                                 blogContainer.append(postElement);
+
+                      
 
                                 // Обработчики событий для кнопок переключения фотографии
                                 prevButton.click(function () {

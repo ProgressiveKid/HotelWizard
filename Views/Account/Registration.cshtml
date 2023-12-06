@@ -1,0 +1,74 @@
+﻿@model HotelWizard.ViewModels.RegisterViewModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Вход</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Ваши дополнительные стили здесь -->
+    <style>
+        /* Добавляем отступ снизу для кнопки */
+        .btn-registration {
+            margin-top: 20px;
+        }
+
+        /* Подсветка для неверных полей ввода */
+        .form-control.is-invalid {
+            border-color: #dc3545;
+        }
+
+        .button-container {
+            display: grid; /* используем grid */
+            grid-template-columns: repeat(2, auto); /* две колонки с автоматической шириной */
+            gap: 10px; /* добавляем отступ между кнопками */
+        }
+    </style>
+</head>
+<body>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('input[type="password"]').focus(function () {
+                $(this).attr('type', 'text');
+            }).blur(function () {
+                $(this).attr('type', 'password');
+            });
+        });
+    </script>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h2 class="text-center mb-4">Регистрация</h2>
+
+            <form asp-action="Registration" asp-controller="Account" asp-anti-forgery="true" class="needs-validation" novalidate>
+                <div class="validation" asp-validation-summary="ModelOnly"></div>
+                <div class="form-group">
+                    <label asp-for="Email">Введите Email:</label>
+                    <input type="text" asp-for="Email" class="form-control" style="border-color: deepskyblue;"  placeholder="example@mail.ru" required />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Password">Введите пароль:</label>
+                    <input asp-for="Password" type="password" placeholder="пароль" style="border-color: deepskyblue;"  class="form-control" required />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ConfirmPassword">Повторите пароль:</label>
+                    <input asp-for="ConfirmPassword" type="password" placeholder="потвердите пароль" style="border-color: deepskyblue;" class="form-control" required />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+
+                <div class="button-container">
+                        <a asp-action="Autorisation" asp-controller="Account" class="btn btn-danger btn-registration btn-block">Назад</a>
+
+                        <button type="submit" class="btn btn-primary btn-registration btn-block">Регистрация</button>
+                </div>           
+              </form>
+        </div>
+    </div>
+</div>
+</body>

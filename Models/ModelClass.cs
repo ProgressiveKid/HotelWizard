@@ -16,7 +16,11 @@ namespace HotelWizard.Models
         //Расположение
         public string Type { get; set; }
         public string Description { get; set; }
-        public decimal PricePerNight { get; set; }
+
+		[Column(TypeName = "decimal(18, 2)")] // Указание типа столбца
+		public decimal PricePerNight { get; set; }
+
+       // public bool IsActive { get; set; }
         // TODO добавить параметр - посадочных мест
         public ICollection<RoomImage> ImageArray{ get; set; } = new List<RoomImage>();        //public bool IsBooked{ get; set; } // статус
         //public ICollection<DateBooked> DateBreakFree { get; set; } // когда освободиться
@@ -55,15 +59,22 @@ namespace HotelWizard.Models
     }
 
     // Модель для представления информации о госте
-    public class Users
+    public class ModelUsers
     {
-        public int Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+		public ModelUsers()
+		{
+			// Задаем роль по умолчанию
+			Role = Role.User;
+		}
+
+        [Key]
+		public int Id { get; set; }
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
         public Role Role { get; set; }
-        public string PhoneNumber { get; set; }
+        public string? PhoneNumber { get; set; }
         // Другие свойства, такие как адрес и т. д.
     }
 
@@ -78,7 +89,7 @@ namespace HotelWizard.Models
         public int GuestId { get; set; } // Ссылка на гостя
         [ForeignKey("GuestId")]
 
-        public Users Guest { get; set; } // Навигационное свойство
+        public ModelUsers Guest { get; set; } // Навигационное свойство
         public int CountDay { get; set; } // Навигационное свойство
         //мб стартдэй и енддэй
         
@@ -92,6 +103,7 @@ namespace HotelWizard.Models
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string testMigration { get; set; }
         public string Position { get; set; }
         // Другие свойства, такие как контактные данные и т. д.
     }
