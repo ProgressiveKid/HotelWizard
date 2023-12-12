@@ -15,6 +15,13 @@
 
 
     <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+
+
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/HotelWizard.styles.css" asp-append-version="true" />
@@ -42,10 +49,23 @@
                                 <a class="nav-link text-black" asp-area="" asp-controller="Home" asp-action="Index">Бронирование</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-black" asp-area="" asp-controller="Home" asp-action="Privacy">Конфиденциальность</a>
+                                <a class="nav-link text-black" asp-area="" asp-controller="Home" asp-action="News">Новости</a>
                             </li>
+                        
+                            @if (User.IsInRole("User"))
+                             {
+ 
+
+                             }
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-black" asp-area="" asp-controller="Home" asp-action="Privacy" style="white-space: nowrap;">Добавление новостей</a>
+                                </li>
+
+                            }
                             <li class="nav-user">
-                                <a class="nav-link text-black" asp-area="" asp-controller="Account" asp-action="Autorisation">
+                                <a class="nav-link text-black" asp-area="" asp-controller="Account" asp-action="UserOffice">
                                     <img src="/images/icon/user.png" alt="Пользователь">
                                 </a>
                             </li>

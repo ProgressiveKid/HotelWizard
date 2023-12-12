@@ -19,6 +19,20 @@
 </head>
 <body>
 
+    <button id="printButton">Печать</button>
+
+
+    <script>
+        document.getElementById("printButton").addEventListener("click", function () {
+            printDocument();
+        });
+
+        function printDocument() {
+            // Вызывает окно печати браузера
+            window.print();
+        }
+    </script>
+
     <input type="text" name="datefilter" placeholder="Выберите дату бронирования" value="" />
     <br>    
     <output name="labelDays"></output>

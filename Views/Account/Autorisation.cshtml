@@ -30,12 +30,14 @@
         <div class="row justify-content-center mt-5">
             <div class="col-md-6">
                 <h2 class="text-center mb-4">Авторизация</h2>
-                <form asp-action="Autorisation" asp-controller="Account" method="post" asp-anti-forgery="true" class="needs-validation" novalidate>
+
+                <form id="loginForm" asp-action="Autorisation" asp-controller="Account" method="post" asp-anti-forgery="true" class="needs-validation" novalidate autocomplete="off">
+                    <div class="validation" asp-validation-summary="ModelOnly"></div>
                     <div class="form-group">
                         <label for="Username">Почта пользователя:</label>
                         <!--  <input id="mailLogin" type="text" class="form-control" placeholder="example&#64mail.ru" style="border-color: deepskyblue;"> -->
                         <input asp-for="Email" type="text" placeholder="example&#64mail" style="border-color: deepskyblue;" class="form-control" required />
-
+                        <span asp-validation-for="Email" class="text-danger"></span>
                         <div class="invalid-feedback">
                             Пожалуйста, введите имя пользователя.
                         </div>
@@ -43,19 +45,20 @@
                     <div class="form-group">
                         <label for="Password">Пароль:</label>
                         <!-- <input id = "password" type="password"  name="Password" style="border-color: deepskyblue;" class="form-control" required /> -->
-                        <input asp-for="Password " type="password" placeholder="пароль" style="border-color: deepskyblue;" class="form-control" required />
-
+                        <input asp-for="Password" type="password" placeholder="пароль" style="border-color: deepskyblue;" class="form-control" required />
+                        <span asp-validation-for="Password" class="text-danger"></span>
                         <div class="invalid-feedback">
                             Пожалуйста, введите пароль.
                         </div>
                     </div>
                     <div class="button-container">
                         <button id = "loginButton" type="submit" class="btn btn-primary btn-login btn-block">Войти</button>
-                      
+                    
                         <a asp-action="Registration" asp-controller="Account" class="btn btn-success btn-login btn-block">Зарегистрироваться</a>
                        
                     </div>
                 </form>
+
             </div>
         </div>
     </div>

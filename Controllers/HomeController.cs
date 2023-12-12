@@ -1,14 +1,22 @@
 ﻿using HotelWizard.Models;
+using System.Drawing.Printing;
+
+using System.IO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
 using Microsoft.Extensions.Localization;
+using System.Diagnostics;
 using System.Globalization;
-using Microsoft.AspNetCore.Authorization;
+using System.Net;
+using System.Net.Mail;
+
+
+using Spire.Pdf;
 
 namespace HotelWizard.Controllers
 {
-	public class HomeController : Controller
+    public class HomeController : Controller
     {
         ApplicationContext db;
         private readonly IStringLocalizer<HomeController> _localizer;
@@ -22,9 +30,46 @@ namespace HotelWizard.Controllers
           
         }
 
+        private void SendMessage()
+        {
+            // Настройки SMTP-сервера Mail.ru
+            string smtpServer = "smtp.mail.ru"; //smpt сервер(зависит от почты отправителя)
+            int smtpPort = 587; // Обычно используется порт 587 для TLS
+            string smtpUsername = "jostonn@mail.ru"; //твоя почта, с которой отправляется сообщение
+            string smtpPassword = "footandtoy8";//пароль приложения (от почты)
+
+            // Создаем объект клиента SMTP
+            using (SmtpClient smtpClient = new SmtpClient(smtpServer, smtpPort))
+            {
+                
+                // Настройки аутентификации
+                smtpClient.Credentials = new NetworkCredential(smtpUsername, smtpPassword);
+                smtpClient.EnableSsl = true;
+
+                using (MailMessage mailMessage = new MailMessage())
+                {
+                    mailMessage.From = new MailAddress(smtpUsername);
+                    mailMessage.To.Add("konus228@mail.ru"); // Укажите адрес получателя
+                    mailMessage.Subject = "Заголовок сообщения (тема)";
+                    mailMessage.Body = $"Текст сообщения";
+
+                    try
+                    {
+                        // Отправляем сообщение
+                        smtpClient.Send(mailMessage);
+                        Console.WriteLine("Сообщение успешно отправлено.");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Ошибка отправки сообщения: {ex.Message}");
+                    }
+                }
+            }
+        }
+
 
         [HttpPost]
-        public JsonResult GetData(string startDate1, string endDate1)
+        public async Task<JsonResult> GetData(string startDate1, string endDate1)
         {
             //Проверка по всем заказам на определенную дату
             DateTime startDate = DateTime.ParseExact(startDate1, "dd.MM.yyyy", CultureInfo.InvariantCulture);
@@ -35,8 +80,8 @@ namespace HotelWizard.Controllers
 				.Include(r => r.ImageArray) // Включить изображения для каждой комнаты
 				.ToList(); 
             List <Room> freeRooms = new List<Room>();
-
-          //!Не трогатть
+            SendMessage();
+              //!Не трогатть
             foreach (var room in listRooms)
             {  // проходися по всем комнатам
                 var listOrdersForRoom = db.DateBookeds.Where(u => u.RoomId == room.Id).ToList();
@@ -72,11 +117,14 @@ namespace HotelWizard.Controllers
             DateTime endDate = DateTime.Parse(endDate1);
             //Проверка по всем заказам на определенную дату
             //TODO сделать так чтобы можно было бранировать на дату выселения предыдщуего человека
+            string mail = User.Identity.Name;
+            ModelUsers user = db.Users.FirstOrDefault(user => user.Email == mail);
             DateBooked newOrder = new DateBooked()
             {
                 startDate = startDate,
                 endDate = endDate,
-                RoomId = idRoom
+                RoomId = idRoom,
+                UserId = user.Id
 
             };
        

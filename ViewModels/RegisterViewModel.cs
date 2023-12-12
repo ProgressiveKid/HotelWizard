@@ -13,7 +13,8 @@ namespace HotelWizard.ViewModels
 		public string Password { get; set; }
 
 		[DataType(DataType.Password)]
-		[Compare("Password", ErrorMessage = "Пароль введен неверно")]
+        [Required(ErrorMessage = "Не указан пароль")]
+        [Compare("Password", ErrorMessage = "Пароль введен неверно")]
 		public string ConfirmPassword { get; set; }
 	}
 }

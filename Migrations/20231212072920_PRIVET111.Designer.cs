@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HotelWizard.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20231212072920_PRIVET111")]
+    partial class PRIVET111
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -123,7 +126,7 @@ namespace HotelWizard.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("TotalPrice")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
@@ -150,8 +153,8 @@ namespace HotelWizard.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("PricePerNight")
-                        .HasColumnType("float");
+                    b.Property<decimal>("PricePerNight")
+                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<string>("Type")
                         .IsRequired()
@@ -167,7 +170,7 @@ namespace HotelWizard.Migrations
                             Id = 1,
                             Description = "Стандартный люкс с бассеином",
                             Number = "101",
-                            PricePerNight = 100.0,
+                            PricePerNight = 100.0m,
                             Type = "I"
                         },
                         new
@@ -175,7 +178,7 @@ namespace HotelWizard.Migrations
                             Id = 2,
                             Description = "Обычный номер",
                             Number = "201",
-                            PricePerNight = 50.0,
+                            PricePerNight = 50.0m,
                             Type = "II"
                         },
                         new
@@ -183,7 +186,7 @@ namespace HotelWizard.Migrations
                             Id = 3,
                             Description = "Обычный номер",
                             Number = "202",
-                            PricePerNight = 50.0,
+                            PricePerNight = 50.0m,
                             Type = "III"
                         });
                 });

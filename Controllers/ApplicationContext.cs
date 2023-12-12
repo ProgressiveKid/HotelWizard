@@ -14,8 +14,8 @@ public class ApplicationContext : DbContext
     public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
     {
 		
-		// Database.EnsureDeleted();
-		// Database.EnsureCreated();
+		 Database.EnsureDeleted();
+		 Database.EnsureCreated();
 	}
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -47,7 +47,7 @@ public class ApplicationContext : DbContext
 					Number = "101",
 					Type = "I",
 					Description = "Стандартный люкс с бассеином",
-					PricePerNight = 100.0m
+					PricePerNight = 100.0
 				},
 				new Room
 				{
@@ -55,7 +55,7 @@ public class ApplicationContext : DbContext
 					Number = "201",
 					Type = "II",
 					Description = "Обычный номер",
-					PricePerNight = 50.0m
+					PricePerNight = 50.0
 				},
 				new Room
 				{
@@ -63,7 +63,7 @@ public class ApplicationContext : DbContext
 					Number = "202",
 					Type = "III",
 					Description = "Обычный номер",
-					PricePerNight = 50.0m
+					PricePerNight = 50.0
 				}
 			);
 
@@ -75,6 +75,7 @@ public class ApplicationContext : DbContext
                 startDate = new DateTime(2023, 10, 6),
                 endDate = new DateTime(2023, 10, 8),
                 RoomId = 1, // Ссылка на комнату с Id = 1
+				UserId = 1
             },
             new DateBooked
             {
@@ -82,6 +83,7 @@ public class ApplicationContext : DbContext
                 startDate = new DateTime(2023, 10, 10),
                 endDate = new DateTime(2023, 10, 12),
                 RoomId = 2, // Ссылка на комнату с Id = 2
+                UserId = 1,
             },
             new DateBooked
             {
@@ -89,18 +91,28 @@ public class ApplicationContext : DbContext
                 startDate = new DateTime(2023, 10, 7),
                 endDate = new DateTime(2023, 10, 10),
                 RoomId = 3, // Ссылка на комнату с Id = 3
+                UserId = 2
             }
-            //new DateBooked
-            //{
-            //    Id = 4,
-            //    startDate = new DateTime(2023, 9, 12),
-            //    endDate = new DateTime(2023, 9, 14),
-            //    RoomId = 2, // Ссылка на комнату с Id = 2
-            //}
-            // Добавьте другие бронирования по аналогии
-
         );
 
+
+        modelBuilder.Entity<ModelUsers>().HasData(
+            new ModelUsers
+            {
+                Id = 1,
+                Email = "123",
+                Password = "123",
+                Role = Role.User,
+            },
+            new ModelUsers
+            {
+                Id = 2,
+                Email = "111",
+                Password = "111",
+                Role = Role.Admin,
+            }
+           
+        );
     }
 
 

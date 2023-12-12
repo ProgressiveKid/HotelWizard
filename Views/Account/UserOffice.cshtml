@@ -1,5 +1,38 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using Microsoft.AspNetCore.Identity
 @{
+    ViewData["Title"] = "Личный кабинет";
+    string dateTime = DateTime.Now.ToString("MM/dd/yyyy");
+    //List<Room> RoomsDB = ViewData["Rooms"] as List<Room>;
+    string message = "";
+
+}
+@if (User.IsInRole("User"))
+{
+
+   
+    <div>
+        <span>Бронирование</span>
+
+
+    </div>
+
+
+    <form method="post" asp-controller="Account" asp-action="Logout" asp-area="" id="logoutForm">
+        @Html.AntiForgeryToken()
+        <button type="submit">Выйти из учётной записи</button>
+    </form>
+
+}
+
+@if (User.IsInRole("Admin"))
+{
+
+  
+
+
+    <form method="post" asp-controller="Account" asp-action="Logout" asp-area="" id="logoutForm">
+        @Html.AntiForgeryToken()
+        <button type="submit">Выйти из учётной записи</button>
+    </form>
+
 }

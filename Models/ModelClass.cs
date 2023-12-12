@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
 
 namespace HotelWizard.Models
 {
@@ -17,8 +18,8 @@ namespace HotelWizard.Models
         public string Type { get; set; }
         public string Description { get; set; }
 
-		[Column(TypeName = "decimal(18, 2)")] // Указание типа столбца
-		public decimal PricePerNight { get; set; }
+		//[Column(TypeName = "decimal(18, 2)")] // Указание типа столбца//
+		public double PricePerNight { get; set; }
 
        // public bool IsActive { get; set; }
         // TODO добавить параметр - посадочных мест
@@ -50,12 +51,16 @@ namespace HotelWizard.Models
        // public bool Booked { get; set; }
         public int RoomId { get; set; }// Ссылка на комнату
 
+        public int UserId { get; set; } // Ссылка на гостя
     }
 
     public enum Role
-    { 
-        User,
-        Admin
+    {
+        [EnumMember(Value = "Admin")]
+        Admin,
+
+        [EnumMember(Value = "User")]
+        User
     }
 
     // Модель для представления информации о госте
@@ -91,8 +96,9 @@ namespace HotelWizard.Models
 
         public ModelUsers Guest { get; set; } // Навигационное свойство
         public int CountDay { get; set; } // Навигационное свойство
-        //мб стартдэй и енддэй
-        
+                                          //мб стартдэй и енддэй
+
+        [Column(TypeName = "decimal(18, 2)")] 
         public decimal TotalPrice { get; set; }
         // Другие свойства, такие как дополнительные услуги, комментарии и т. д.
     }
