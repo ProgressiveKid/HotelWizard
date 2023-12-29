@@ -9,7 +9,7 @@ public class ApplicationContext : DbContext
     public DbSet<ModelUsers> Users { get; set; } = null!;
     public DbSet<Room> Rooms { get; set; } = null!;
     public DbSet<RoomImage> RoomImages { get; set; } = null!;
-    public DbSet<DateBooked> DateBookeds { get; set; } = null!;
+    public DbSet<Order> Orders { get; set; } = null!;
 
     public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
     {
@@ -68,8 +68,8 @@ public class ApplicationContext : DbContext
 			);
 
 
-		modelBuilder.Entity<DateBooked>().HasData(
-            new DateBooked
+		modelBuilder.Entity<Order>().HasData(
+            new Order
             {
                 Id = 1,
                 startDate = new DateTime(2023, 10, 6),
@@ -77,7 +77,7 @@ public class ApplicationContext : DbContext
                 RoomId = 1, // Ссылка на комнату с Id = 1
 				UserId = 1
             },
-            new DateBooked
+            new Order
             {
                 Id = 2,
                 startDate = new DateTime(2023, 10, 10),
@@ -85,7 +85,7 @@ public class ApplicationContext : DbContext
                 RoomId = 2, // Ссылка на комнату с Id = 2
                 UserId = 1,
             },
-            new DateBooked
+            new Order
             {
                 Id = 3,
                 startDate = new DateTime(2023, 10, 7),

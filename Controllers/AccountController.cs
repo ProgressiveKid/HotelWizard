@@ -29,6 +29,8 @@ namespace HotelWizard.Controllers
         {
             string mail = User.Identity.Name;
             ModelUsers user = await db.Users.FirstOrDefaultAsync(u => u.Email == mail);
+			int userId = user.Id;
+			List<Order> order = db.Orders.Where(order => order.UserId == userId).ToList();
 			if (User.IsInRole("Admin"))
 			{
                 Console.WriteLine("Зашёл Батя");

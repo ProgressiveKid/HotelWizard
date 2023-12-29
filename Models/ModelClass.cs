@@ -41,7 +41,7 @@ namespace HotelWizard.Models
         public int RoomId { get; set; }
     }
 
-    public class DateBooked
+    public class Order
     {
         [Key]
         public int Id { get; set; }

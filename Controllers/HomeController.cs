@@ -75,7 +75,7 @@ namespace HotelWizard.Controllers
             DateTime startDate = DateTime.ParseExact(startDate1, "dd.MM.yyyy", CultureInfo.InvariantCulture);
             DateTime endDate = DateTime.ParseExact(endDate1, "dd.MM.yyyy", CultureInfo.InvariantCulture);
 
-            var listOrders = db.DateBookeds.ToList();
+            var listOrders = db.Orders.ToList();
 			var listRooms = db.Rooms
 				.Include(r => r.ImageArray) // Включить изображения для каждой комнаты
 				.ToList(); 
@@ -84,7 +84,7 @@ namespace HotelWizard.Controllers
               //!Не трогатть
             foreach (var room in listRooms)
             {  // проходися по всем комнатам
-                var listOrdersForRoom = db.DateBookeds.Where(u => u.RoomId == room.Id).ToList();
+                var listOrdersForRoom = db.Orders.Where(u => u.RoomId == room.Id).ToList();
                 bool isRoomAvailable = false;
                 foreach (var order in listOrdersForRoom)
                 { //проходимся по всем заказам текущей комнаты
@@ -119,7 +119,7 @@ namespace HotelWizard.Controllers
             //TODO сделать так чтобы можно было бранировать на дату выселения предыдщуего человека
             string mail = User.Identity.Name;
             ModelUsers user = db.Users.FirstOrDefault(user => user.Email == mail);
-            DateBooked newOrder = new DateBooked()
+            Order newOrder = new Order()
             {
                 startDate = startDate,
                 endDate = endDate,
@@ -128,7 +128,7 @@ namespace HotelWizard.Controllers
 
             };
        
-            db.DateBookeds.Add(newOrder);
+            db.Orders.Add(newOrder);
             db.SaveChanges();
 
             return Json("Its okay");
