@@ -1,38 +1,72 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @{
     ViewData["Title"] = "Личный кабинет";
-    string dateTime = DateTime.Now.ToString("MM/dd/yyyy");
-    //List<Room> RoomsDB = ViewData["Rooms"] as List<Room>;
+    var dataList = ViewData["DataList"] as List<string>;
     string message = "";
-
 }
 @if (User.IsInRole("User"))
 {
-
-   
     <div>
         <span>Бронирование</span>
-
-
     </div>
-
-
     <form method="post" asp-controller="Account" asp-action="Logout" asp-area="" id="logoutForm">
         @Html.AntiForgeryToken()
         <button type="submit">Выйти из учётной записи</button>
     </form>
-
 }
-
 @if (User.IsInRole("Admin"))
 {
-
-  
-
-
     <form method="post" asp-controller="Account" asp-action="Logout" asp-area="" id="logoutForm">
+      
+        <select id="userSelector" class="form-control">
+            <option value="">Выберите пользователя</option>
+            @foreach (var user in dataList)
+            {
+                <option value="@user">@user</option>
+            }
+        </select>
+        <div id="userInfo"></div>
+
+        <script>
+            $(document).ready(function () {
+                $('#userSelector').change(function () {
+                    var selectedValue = $(this).val();
+                    if (selectedValue) {
+                        $.ajax({
+                            url: '@Url.Action("GetInfoAboutUser", "Home")',
+                            type: 'POST',
+                            data: { nameAndId: selectedValue },
+                            success: function (userData) {
+                                console.log(userData);
+                                var userInfoContainer = $('#userInfo');
+                                userInfoContainer.innerHTML = '';
+                                // Отображение данных о пользователе
+                                userInfoContainer.append('<p>FIO: ' + userData.fio + '</p>');
+                                userInfoContainer.append('<p>Email: ' + userData.email + '</p>');
+
+                                // Отображение данных о заказах
+                                userInfoContainer.append('<h3>Заказы:</h3>');
+                                userInfoContainer.append('<ul>');
+
+                                userData.listOrders.forEach(function (order) {
+                                    userInfoContainer.append('<li>' + userData.listOrders.Id + '</li>');
+                                });
+                                userInfoContainer.append('</ul>');
+
+                                // Обработка успешного ответа
+                            },
+                            error: function (error) {
+                                console.error(error);
+                                // Обработка ошибки
+                            }
+                        });
+                    }
+                });
+            });
+        </script>
+
+
         @Html.AntiForgeryToken()
         <button type="submit">Выйти из учётной записи</button>
     </form>
-
 }

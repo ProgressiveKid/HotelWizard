@@ -103,6 +103,9 @@ public class ApplicationContext : DbContext
                 Email = "123",
                 Password = "123",
                 Role = Role.User,
+                FirstName = "Владислав",
+                Surname = "Сергеевич",
+                LastName = "Голуб"
             },
             new ModelUsers
             {
@@ -110,6 +113,9 @@ public class ApplicationContext : DbContext
                 Email = "111",
                 Password = "111",
                 Role = Role.Admin,
+                FirstName = "Румпель",
+                Surname = "Румпель",
+                LastName = "Штинский"
             }
            
         );

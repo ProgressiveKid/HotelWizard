@@ -13,6 +13,7 @@ using System.Net.Mail;
 
 
 using Spire.Pdf;
+using HotelWizard.ViewModels;
 
 namespace HotelWizard.Controllers
 {
@@ -109,8 +110,6 @@ namespace HotelWizard.Controllers
         }
 
         [HttpPost]
-
-
         public JsonResult MakeOrder(string startDate1, string endDate1, int idRoom)
         {
             DateTime startDate = DateTime.Parse(startDate1);
@@ -143,7 +142,6 @@ namespace HotelWizard.Controllers
             return View();
         }
 
-
 		public IActionResult Privacy()
         {
             return View();
@@ -154,5 +152,37 @@ namespace HotelWizard.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        #region UserController
+
+        #endregion
+
+        #region AdminController
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public JsonResult GetInfoAboutUser(string nameAndId)
+        {
+            ModelUsers selectedUser = new ModelUsers
+            {
+                FirstName = nameAndId.Split(' ')[0],
+                Surname = nameAndId.Split(' ')[1],
+                LastName = nameAndId.Split(' ')[2].Split('/')[0],
+                Email = nameAndId.Split(' ')[2].Split('/')[1],
+
+            };
+            ModelUsers user = db.Users.Where(u => u.Email == selectedUser.Email).FirstOrDefault();
+            List<Order> listOrders = db.Orders.Where(u => u.UserId == user.Id).ToList();
+            UserOfficeViewModel userOfficeViewModel = new UserOfficeViewModel
+            {
+                FIO = user.FirstName + " " + user.Surname + " " + user.LastName,
+                Email = user.Email,
+                ListOrders = listOrders
+            };
+
+            return Json(userOfficeViewModel);
+        }
+
+        #endregion
     }
 }

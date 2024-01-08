@@ -27,24 +27,26 @@ namespace HotelWizard.Controllers
     
         public async Task<IActionResult> UserOffice()
         {
-            string mail = User.Identity.Name;
-            ModelUsers user = await db.Users.FirstOrDefaultAsync(u => u.Email == mail);
-			int userId = user.Id;
-			List<Order> order = db.Orders.Where(order => order.UserId == userId).ToList();
+            
 			if (User.IsInRole("Admin"))
 			{
+                List<string> usersList = await db.Users
+					 .Select(user => $"{user.FirstName} {user.Surname} {user.LastName}/{user.Email}")
+					 .ToListAsync();       
+                ViewData["DataList"] = usersList;
                 Console.WriteLine("Зашёл Батя");
-
-
 
             }
             else
 			{
+                string mail = User.Identity.Name;
+                ModelUsers user = await db.Users.FirstOrDefaultAsync(u => u.Email == mail);
+                int userId = user.Id;
+                List<Order> order = db.Orders.Where(order => order.UserId == userId).ToList();
                 Console.WriteLine("Зашёл пользователь");
-
             }
 
-            return View(user);
+            return View();
         }
 
 
