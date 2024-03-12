@@ -1,5 +1,4 @@
 ﻿@model HotelWizard.ViewModels.RegisterViewModel
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,12 +11,10 @@
         .btn-registration {
             margin-top: 20px;
         }
-
         /* Подсветка для неверных полей ввода */
         .form-control.is-invalid {
             border-color: #dc3545;
         }
-
         .button-container {
             display: grid; /* используем grid */
             grid-template-columns: repeat(2, auto); /* две колонки с автоматической шириной */
@@ -26,7 +23,6 @@
     </style>
 </head>
 <body>
-
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
         $(document).ready(function () {
@@ -48,22 +44,33 @@
                     <input type="text" asp-for="Email" class="form-control" style="border-color: deepskyblue;"  placeholder="example@mail.ru" required />
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
-
                 <div class="form-group">
                     <label asp-for="Password">Введите пароль:</label>
-                    <input asp-for="Password" type="password" placeholder="пароль" style="border-color: deepskyblue;"  class="form-control" required />
+                    <input asp-for="Password" type="text" placeholder="пароль" style="border-color: deepskyblue;"  class="form-control" required />
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
-
                 <div class="form-group">
                     <label asp-for="ConfirmPassword">Повторите пароль:</label>
-                    <input asp-for="ConfirmPassword" type="password" placeholder="подтвердите пароль" style="border-color: deepskyblue;" class="form-control" required />
+                    <input asp-for="ConfirmPassword" type="text" placeholder="подтвердите пароль" style="border-color: deepskyblue;" class="form-control" required />
                     <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                 </div>
-
+                <div class="form-group">
+                        <label asp-for="FirstName">Введите имя:</label>
+                        <input asp-for="FirstName" type="text" placeholder="введите имя" style="border-color: deepskyblue;" class="form-control" required />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                        <label asp-for="Surname">Введите отчество:</label>
+                        <input asp-for="Surname" type="text" placeholder="введите отчество" style="border-color: deepskyblue;" class="form-control" required />
+                        <span asp-validation-for="Surname" class="text-danger"></span>
+                </div>
+                    <div class="form-group">
+                        <label asp-for="LastName">Введите Фамилию:</label>
+                        <input asp-for="LastName" type="text" placeholder="введите фамилию" style="border-color: deepskyblue;" class="form-control" required />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
                 <div class="button-container">
                         <a asp-action="Autorisation" asp-controller="Account" class="btn btn-danger btn-registration btn-block">Назад</a>
-
                         <button type="submit" class="btn btn-primary btn-registration btn-block">Регистрация</button>
                 </div>           
               </form>

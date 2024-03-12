@@ -2,7 +2,6 @@
 using HotelWizard.Models;
 using Newtonsoft.Json;
 using System.Configuration;
-
 public class ApplicationContext : DbContext
 {
     public DbSet<Reservation> Reservations { get; set; } = null!;
@@ -10,13 +9,19 @@ public class ApplicationContext : DbContext
     public DbSet<Room> Rooms { get; set; } = null!;
     public DbSet<RoomImage> RoomImages { get; set; } = null!;
     public DbSet<Order> Orders { get; set; } = null!;
-
     public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
     {
-		
-		 Database.EnsureDeleted();
-		 Database.EnsureCreated();
-	}
+        if (Database.CanConnect())
+        {
+            //Database.EnsureDeleted();
+           // Database.EnsureCreated();
+        }
+        else
+        {
+            Database.EnsureCreated();
+        }
+        // Database.EnsureDeleted();
+    }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -38,8 +43,6 @@ public class ApplicationContext : DbContext
 			new RoomImage { id = 15, image = "/images/Rooms/3/7.jpeg", RoomId = 3 },
 			new RoomImage { id = 16, image = "/images/Rooms/3/8.jpeg", RoomId = 3 }
 		);
-
-
 		modelBuilder.Entity<Room>().HasData(
 				new Room
 				{
@@ -66,8 +69,6 @@ public class ApplicationContext : DbContext
 					PricePerNight = 50.0
 				}
 			);
-
-
 		modelBuilder.Entity<Order>().HasData(
             new Order
             {
@@ -94,8 +95,6 @@ public class ApplicationContext : DbContext
                 UserId = 2
             }
         );
-
-
         modelBuilder.Entity<ModelUsers>().HasData(
             new ModelUsers
             {
@@ -117,9 +116,6 @@ public class ApplicationContext : DbContext
                 Surname = "Румпель",
                 LastName = "Штинский"
             }
-           
         );
     }
-
-
 }

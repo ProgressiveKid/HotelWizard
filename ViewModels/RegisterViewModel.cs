@@ -16,5 +16,13 @@ namespace HotelWizard.ViewModels
         [Required(ErrorMessage = "Не указан пароль")]
         [Compare("Password", ErrorMessage = "Пароль введен неверно")]
 		public string ConfirmPassword { get; set; }
-	}
+
+        [Required(ErrorMessage = "Не указан Имя")]
+        public string? FirstName { get; set; }
+        [Required(ErrorMessage = "Не указан Отчество")]
+        public string? Surname { get; set; }
+        [Required(ErrorMessage = "Не указано Мамилия")]
+        public string? LastName { get; set; }
+
+    }
 }

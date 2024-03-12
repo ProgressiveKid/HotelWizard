@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="HotelWizard.Models.Room" Collapsed="true">
+    <Position X="4.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAgAAAAAEAAAAAAAAAAAAIAAQAAACAAAAA=</HashCode>
+      <FileName>Models\ModelClass.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HotelWizard.Models.RoomImage">
+    <Position X="6" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Models\ModelClass.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HotelWizard.Models.Order">
+    <Position X="6" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAACAAACAAAAAAAAACAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\ModelClass.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HotelWizard.Models.ModelUsers">
+    <Position X="4.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAEAAACAAAAAAEAAAQAAABAAAAAACAAAAAAAAAAg=</HashCode>
+      <FileName>Models\ModelClass.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HotelWizard.Models.Reservation">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAACgAAAABAAABAAAAAAAAAAQAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Models\ModelClass.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HotelWizard.Controllers.AccountController">
+    <Position X="5.25" Y="4.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAAAAAAAAAIAAQAAIAAAAAAAAACEAAA=</HashCode>
+      <FileName>Controllers\AccountController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HotelWizard.Controllers.HomeController">
+    <Position X="2.75" Y="3.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEBAQAQAAACAAAAAAAAAAAQAAAMEAEIAAAAA=</HashCode>
+      <FileName>Controllers\HomeController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Seqoe UI" Size="9" />
+</ClassDiagram>
