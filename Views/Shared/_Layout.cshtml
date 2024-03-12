@@ -1,27 +1,16 @@
 ﻿@using Microsoft.AspNetCore.Identity
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Coral Dreams</title>
-
-
     <link rel="icon" type="image/png" sizes="32x32" href="images/icon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="images/icon/favicon-16x16.png">
-
-
     <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
-
-
-
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/HotelWizard.styles.css" asp-append-version="true" />
@@ -29,10 +18,8 @@
     <script src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-
 </head>
 <body>
-
     <header>
         @if (User.Identity.IsAuthenticated)
         {
@@ -48,28 +35,17 @@
                             <li class="nav-item">
                                 <a class="nav-link text-black" asp-area="" asp-controller="Home" asp-action="Index">Бронирование</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-black" asp-area="" asp-controller="Home" asp-action="News">Новости</a>
-                            </li>
-                        
                             @if (User.IsInRole("User"))
                              {
- 
-
                              }
                             @if (User.IsInRole("Admin"))
                             {
-                                <li class="nav-item">
-                                    <a class="nav-link text-black" asp-area="" asp-controller="Home" asp-action="Privacy" style="white-space: nowrap;">Добавление новостей</a>
-                                </li>
-
                             }
                             <li class="nav-user">
                                 <a class="nav-link text-black" asp-area="" asp-controller="Account" asp-action="UserOffice">
                                     <img src="/images/icon/user.png" alt="Пользователь">
                                 </a>
                             </li>
-
                         </ul>
                     </div>
                 </div>
@@ -80,19 +56,15 @@
             <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
                 <div class="container-fluid">
                     <a class="navbar-brand" style="font-family: 'Pacifico', sans-serif;" asp-area="">Coral Dreams</a>
-                  
-                    
                 </div>
             </nav>
         }
-
     </header>
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
-
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2023 - Coral Dreams - <a asp-area="" asp-controller="Home" asp-action="Privacy">Конфиденциальность</a>
@@ -104,7 +76,6 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)

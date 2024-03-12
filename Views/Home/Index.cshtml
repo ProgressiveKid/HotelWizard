@@ -6,10 +6,7 @@
     string dateTime = DateTime.Now.ToString("MM/dd/yyyy");
     List<Room> RoomsDB = ViewData["Rooms"] as List<Room>;
     string message = "";
-
 }
-
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,29 +15,13 @@
     <!-- Подключение jQuery -->
 </head>
 <body>
-
-    <button id="printButton">Печать</button>
-
-
-    <script>
-        document.getElementById("printButton").addEventListener("click", function () {
-            printDocument();
-        });
-
-        function printDocument() {
-            // Вызывает окно печати браузера
-            window.print();
-        }
-    </script>
-
     <input type="text" name="datefilter" placeholder="Выберите дату бронирования" value="" />
-    <br>    
+    <br>
     <output name="labelDays"></output>
-    <div class="box"><img class="image" src="/images/Landing/head1.jpeg"></div>
-    <div id="blog-container"> 
+    @*  <div class="box"><img class="image" src="/images/Landing/head1.jpeg"></div>*@
+    <div id="blog-container">
         <!-- Здесь будут отображаться блоги -->
     </div>
-    
     <script type="text/javascript">
         class Room {
             constructor(id, number, type, description, pricePerNight, imageArray) {
@@ -95,7 +76,6 @@
                 $('output[name="labelDays"]').val("Количество дней: " + daysDiff);
                 let startDateString = startDate.format("DD.MM.YYYY");
                 let endDateString = endDate.format("DD.MM.YYYY");
-
                 //Должно быть ещё кол-во ночей
                 $.ajax({
                     url: "@Url.Action("GetData")",
@@ -108,40 +88,27 @@
                     success: function (data) {
                         // Здесь вы можете обработать ответ от сервера (data)
                         var blogContainer = $("#blog-container"); // Получите контейнер, где будет отображаться блог
-
-                        if (data.length != 0)
-                        {
+                        if (data.length != 0) {
                             blogContainer.empty(); // Очистить содержимое контейнера
                             $.each(data, function (index, post) {
-
-
                                 var postElement = $("<div>").addClass("blog-post"); // Создайте элемент для поста и добавьте класс "blog-post"
                                 var index = 0;
-
-
                                 var leftPart = $("<div>").addClass("left-part");
                                 var rightPart = $("<div>").addClass("right-part");
-                                
                                 // Создайте элементы для заголовка, текста, информации и изображения, и вставьте данные
                                 var titleElement = $("<h2>").addClass("post-title").text(post.type);
-                                var textElement = $("<p>").addClass("post-text").text("Итоговая сумма " +  post.pricePerNight*daysDiff + "$");
+                                var textElement = $("<p>").addClass("post-text").text("Итоговая сумма " + post.pricePerNight * daysDiff + "$");
                                 var imageElement = $("<img>").attr("src", post.imageArray[index].image).addClass("post-image");
-
                                 var descriptionElement = $("<p>").addClass("post-description").text(post.description); // Добавлен класс "post-description"                                // Добавьте созданные элементы в элемент поста
-
                                 var prevButton = $("<button>").addClass("prev-button");
                                 var nextButton = $("<button>").addClass("next-button");
                                 var makeOrder = $("<button>").text("Оформить заказ");
-
                                 leftPart.append(titleElement, textElement, descriptionElement, makeOrder);
                                 rightPart.append(imageElement, prevButton, nextButton);
                                 // Добавьте созданные элементы в элемент поста
                                 postElement.append(leftPart, rightPart);
                                 // Добавьте элемент поста в контейнер блога
                                 blogContainer.append(postElement);
-
-                      
-
                                 // Обработчики событий для кнопок переключения фотографии
                                 prevButton.click(function () {
                                     var $image = $(this).closest(".blog-post").find(".post-image");
@@ -151,13 +118,11 @@
                                         let localImage = post.imageArray[index].image;
                                         $image.attr("src", localImage);
                                     }
-                                    
                                 });
                                 let postId = post.id;
                                 // Обработчик события для "Следующая фотография"
                                 nextButton.click(function () {
                                     var $image = $(this).closest(".blog-post").find(".post-image");
-
                                     if (index < post.imageArray.length) {
                                         index++;
                                         let localImage = post.imageArray[index].image;
@@ -173,25 +138,21 @@
                                         data: {
                                             startDate1: startDateString,
                                             endDate1: endDateString,
-                                            idRoom : postId,
+                                            idRoom: postId,
                                         },
-                                        success: function (data) {                                  
+                                        success: function (data) {
                                             alert('Добавлено')
-                                            //Переход на другую страницу                                       
+                                            //Переход на другую страницу
                                         }
                                         // Ваша логика для смены фотографии на следующую
-                                     });
+                                    });
                                 });
                             });
                         }
-                        else
-                         {
+                        else {
                             blogContainer.empty(); // Очистить содержимое контейнера
-
                             alert("Нет доступных спален");
-
-                         
-                         }
+                        }
                         console.log('Ответ от сервера:', data);
                     },
                     error: function (error) {

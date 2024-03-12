@@ -11,13 +11,11 @@
     </div>
     <form method="post" asp-controller="Account" asp-action="Logout" asp-area="" id="logoutForm">
         @Html.AntiForgeryToken()
-        <button type="submit">Выйти из учётной записи</button>
+        <button type="submit" class="btn btn-success btn-login btn-block">Выйти из учётной записи</button>
     </form>
 }
 @if (User.IsInRole("Admin"))
 {
-    <form method="post" asp-controller="Account" asp-action="Logout" asp-area="" id="logoutForm">
-      
         <select id="userSelector" class="form-control">
             <option value="">Выберите пользователя</option>
             @foreach (var user in dataList)
@@ -26,10 +24,30 @@
             }
         </select>
         <div id="userInfo"></div>
-
         <script>
+        function deleteOrder(orderId, userEmail) {
+            // Your code to send orderId and userEmail to the controller (e.g., using AJAX)
+            console.log('Удалить заказ с номером: ' + orderId + ', пользователя: ' + userEmail);
+            $.ajax({
+                url: '@Url.Action("DeleteOrder", "Home")', // Replace YourControllerName with the actual name of your controller
+                type: 'POST',
+                data: {
+                    orderIdP: orderId,
+                    userEmailP: userEmail
+                },
+                success: function (response) {
+                    // Handle success response
+                    console.log('Order deleted successfully');
+                    location.reload();
+                },
+                error: function (error) {
+                    // Handle error response
+                    console.error('Error deleting order:', error);
+                }
+            });
+        }
             $(document).ready(function () {
-                $('#userSelector').change(function () {
+                $('#userSelector').change(function (event) {
                     var selectedValue = $(this).val();
                     if (selectedValue) {
                         $.ajax({
@@ -39,20 +57,93 @@
                             success: function (userData) {
                                 console.log(userData);
                                 var userInfoContainer = $('#userInfo');
-                                userInfoContainer.innerHTML = '';
+                                userInfoContainer.empty();
                                 // Отображение данных о пользователе
                                 userInfoContainer.append('<p>FIO: ' + userData.fio + '</p>');
                                 userInfoContainer.append('<p>Email: ' + userData.email + '</p>');
-
                                 // Отображение данных о заказах
                                 userInfoContainer.append('<h3>Заказы:</h3>');
                                 userInfoContainer.append('<ul>');
-
-                                userData.listOrders.forEach(function (order) {
-                                    userInfoContainer.append('<li>' + userData.listOrders.Id + '</li>');
-                                });
+                                for (var i = 0; i < userData.listOrders.length; i++) {
+                                    var order = userData.listOrders[i];
+                                    console.log(order);
+                                    var date = new Date(order.startDate);
+                                    // Получаем компоненты даты
+                                    var day = date.getDate();
+                                    var month = date.toLocaleString('en', { month: 'short' }); // Получаем сокращенное название месяца
+                                    var year = date.getFullYear();
+                                    var formattedDate = day + ' ' + month + ' ' + year;
+                                    var dateEnd = new Date(order.endDate);
+                                    // Получаем компоненты даты
+                                    var dayEnd = dateEnd.getDate();
+                                    var monthEnd = dateEnd.toLocaleString('en', { month: 'short' }); // Получаем сокращенное название месяца
+                                    var yearEnd = dateEnd.getFullYear();
+                                    var formattedDateEnd = dayEnd + ' ' + monthEnd + ' ' + yearEnd;
+                                    var orderDiv = document.createElement('div');
+                                    var orderHTML = '<li>' + 'Заказ №: ' + order.id + ' Заселение: ' + formattedDate + ' Выселение: ' + formattedDateEnd;
+                                    orderHTML += ' <button class="btn btn-primary btn-registration btn-block" onclick="deleteOrder(\'' + order.id + '\', \'' + userData.email + '\')">Удалить</button></li>';
+                                    orderDiv.innerHTML = orderHTML;
+                                    userInfoContainer.append(orderDiv);
+                                userInfoContainer.append('<hr class="order-spacer">');
+                                    // Дополнительная информация о заказе...
+                                }
                                 userInfoContainer.append('</ul>');
-
+                            userInfoContainer.append('<h3>Редактирование пользователя:</h3>');
+                            var fioComponents = userData.fio.split(' ');
+                            // Создаем div для редактирования пользователя
+                            var editUserDiv = $('<div>', { id: 'editUserDiv' });
+                            // Создаем label и input для фамилии
+                            var lastNameLabel = $('<label>', { for: 'lastNameInput', text: 'Фамилия:' });
+                            var lastNameInput = $('<input>', { type: 'text', id: 'lastNameInput', value: fioComponents[0] });
+                            // Создаем label и input для имени
+                            var firstNameLabel = $('<label>', { for: 'firstNameInput', text: 'Имя:' });
+                            var firstNameInput = $('<input>', { type: 'text', id: 'firstNameInput', value: fioComponents[1] });
+                            // Создаем label и input для отчества
+                            var middleNameLabel = $('<label>', { for: 'middleNameInput', text: 'Отчество:' });
+                            var middleNameInput = $('<input>', { type: 'text', id: 'middleNameInput', value: fioComponents[2] || '' });
+                            // Создаем label и input для электронной почты
+                            var emailLabel = $('<label>', { for: 'emailInput', text: 'Email:' });
+                            var emailInput = $('<input>', { type: 'text', id: 'emailInput', value: userData.email, readonly: false });
+                            // Добавляем созданные label и input в editUserDiv
+                            editUserDiv.append(lastNameLabel);
+                            editUserDiv.append(lastNameInput);
+                            editUserDiv.append(firstNameLabel);
+                            editUserDiv.append(firstNameInput);
+                            editUserDiv.append(middleNameLabel);
+                            editUserDiv.append(middleNameInput);
+                            editUserDiv.append(emailLabel);
+                            editUserDiv.append(emailInput);
+                            var saveChangesButton = $('<button>', {
+                                class: 'btn btn-primary btn-registration btn-block',
+                                text: 'Сохранить изменения',
+                                click: function () {
+                                    // Обработчик нажатия на кнопку сохранения изменений
+                                    // Обновляем значения в userData
+                                    userData.fio = $('#lastNameInput').val() + ' ' + $('#firstNameInput').val() + ' ' + $('#middleNameInput').val();
+                                    userData.email = $('#emailInput').val();
+                                    console.log(userData);
+                                    $.ajax({
+                                        url: '@Url.Action("UpdateUser", "Account")', // Replace YourControllerName with the actual name of your controller
+                                        type: 'POST',
+                                        data: {
+                                            userDataP: userData,
+                                        },
+                                        success: function (response) {
+                                            // Handle success response
+                                            console.log('Order deleted successfully');
+                                            location.reload();
+                                        },
+                                        error: function (error) {
+                                            // Handle error response
+                                            console.error('Error deleting order:', error);
+                                        }
+                                    });
+                                    // Вызываем функцию, которая обновит отображение данных пользователя
+                                }
+                            });
+                            editUserDiv.append(saveChangesButton);
+                            // Добавляем editUserDiv в userInfoContainer
+                            userInfoContainer.append(editUserDiv);
                                 // Обработка успешного ответа
                             },
                             error: function (error) {
@@ -64,9 +155,9 @@
                 });
             });
         </script>
-
-
         @Html.AntiForgeryToken()
-        <button type="submit">Выйти из учётной записи</button>
+    <form method="post" asp-controller="Account" asp-action="Logout" asp-area="" id="logoutForm">
+        @Html.AntiForgeryToken()
+        <button class="btn btn-success btn-login btn-block" type="submit">Выйти из учётной записи</button>
     </form>
 }
