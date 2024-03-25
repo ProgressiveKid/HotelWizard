@@ -20,7 +20,6 @@ public class ApplicationContext : DbContext
         {
             Database.EnsureCreated();
         }
-        // Database.EnsureDeleted();
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
