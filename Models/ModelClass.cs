@@ -31,6 +31,19 @@ namespace HotelWizard.Models
         public int RoomId { get; set; }
     }
 
+    public class Room2
+    {
+        [Key]
+        public int Id { get; set; }
+        public string Number { get; set; }
+        public string Type { get; set; }
+        public string Description { get; set; }
+
+        public double PricePerNight { get; set; }
+
+        public ICollection<RoomImage> ImageArray { get; set; } = new List<RoomImage>();        //public bool IsBooked{ get; set; } // статус
+
+    }
     public class Order
     {
         [Key]
