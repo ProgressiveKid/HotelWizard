@@ -1,28 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="HotelWizard.Models.Room2" Collapsed="true">
-    <Position X="5.25" Y="2.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAACAAAAAAAgAAAAAEAAAAAAAAAAAAIAAQAAACAAAAA=</HashCode>
-      <FileName>Models\ModelClass.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="HotelWizard.Models.RoomImage">
-    <Position X="8.75" Y="3.75" Width="1.5" />
+    <Position X="12.5" Y="3.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAACAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAgA=</HashCode>
       <FileName>Models\ModelClass.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="HotelWizard.Models.Order">
-    <Position X="8.5" Y="1.5" Width="1.5" />
+    <Position X="12.25" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>QAACAAACAAAAAAAAACAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>QAACAAACAAAAAAAAACAAAAgIAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\ModelClass.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="HotelWizard.Models.ModelUsers">
-    <Position X="5.25" Y="1.5" Width="1.5" />
+    <Position X="9" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAEAAACAAAAAAEAAAQAAABAAAAAACAAAAAAAAAAg=</HashCode>
       <FileName>Models\ModelClass.cs</FileName>
@@ -43,11 +36,32 @@
     </TypeIdentifier>
   </Class>
   <Class Name="HotelWizard.Models.Room">
-    <Position X="3.25" Y="1.5" Width="1.5" />
+    <Position X="7" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAAAAAAAgAAAAAEAAAAAAAAAAAAIAAQAAACAAAAA=</HashCode>
       <FileName>Models\ModelClass.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="HotelWizard.Models.Status">
+    <Position X="14.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\ModelClass.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HotelWizard.Models.CopyOfStatus">
+    <Position X="15" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\ModelClass.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="HotelWizard.Models.Role" Collapsed="true">
+    <Position X="11" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\ModelClass.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
   <Font Name="Seqoe UI" Size="9" />
 </ClassDiagram>

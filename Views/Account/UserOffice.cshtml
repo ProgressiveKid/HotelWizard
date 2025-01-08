@@ -55,6 +55,7 @@
                             type: 'POST',
                             data: { nameAndId: selectedValue },
                             success: function (userData) {
+
                                 console.log(userData);
                                 var userInfoContainer = $('#userInfo');
                                 userInfoContainer.empty();
@@ -130,6 +131,12 @@
                                         },
                                         success: function (response) {
                                             // Handle success response
+                                            Swal.fire({
+                                                icon: 'success', // Тип иконки (error, success, warning, info, question)
+                                                title: 'Message',
+                                                text: 'Order delete successfully.',
+                                                confirmButtonText: 'OK'
+                                            });
                                             console.log('Order deleted successfully');
                                             location.reload();
                                         },
@@ -156,6 +163,93 @@
             });
         </script>
         @Html.AntiForgeryToken()
+
+    <h2>
+        Create a Room
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 8px;">
+            <path d="M17 3L21 7M21 7L17 11M21 7L14 14M7 21L3 17M7 21L14 14M3 17L7 13M3 17L4.5 14.5M6.5 12.5L6.5 14.5M5 14L7.5 16.5L12.5 11.5L10 9L5 14L6.5 15L7 14L6 12.5M14 10L18 10"></path>
+        </svg>
+    </h2>
+
+    <form id="createRoomForm" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="Number" class="form-label">Номер комнаты</label>
+            <input type="text" class="form-control" id="Number" name="Number" required />
+        </div>
+
+        <div class="mb-3">
+            <label for="Type" class="form-label">Тип комнаты</label>
+            <select class="form-control" id="Type" name="Type" required>
+                <option value="">Выберите тип комнаты</option>
+                <option value="Одноместная">Одноместная</option>
+                <option value="Двухместная">Двухместная</option>
+                <option value="Люкс">Люкс</option>
+                <option value="Семейная">Семейная</option>
+                <option value="Пентхаус">Пентхаус</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="Description" class="form-label">Описание комнаты</label>
+            <textarea class="form-control" id="Description" name="Description" rows="4" required></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="PricePerNight" class="form-label">Цена за ночь</label>
+            <input type="number" class="form-control" id="PricePerNight" name="PricePerNight" step="0.01" required />
+        </div>
+
+        <div class="mb-3">
+            <label for="Images" class="form-label">Room Images</label>
+            <input type="file" class="form-control" id="Images" name="Images" multiple />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Create Room</button>
+    </form>
+    <h1></h1>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#createRoomForm").on("submit", function (e) {
+                e.preventDefault();
+
+                var formData = new FormData(this);
+
+                $.ajax({
+                    url: '@Url.Action("Create", "Home")',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        if (response.success) {
+                            const audio = new Audio('/sound/build.mp3'); // Указываем путь к аудиофайлу
+                            audio.play(); // Воспроизводим звук
+                            Swal.fire({
+                                icon: 'success', // Тип иконки (error, success, warning, info, question)
+                                title: 'Room created successfully.',
+                                text: response.error,
+                                confirmButtonText: 'OK'
+                            });
+                            
+
+                        } else {
+                            Swal.fire({
+                                icon: 'error', // Тип иконки (error, success, warning, info, question)
+                                title: 'Ошибка.',
+                                text: response.error,
+                                confirmButtonText: 'OK'
+                            });
+                           
+                        }
+                    },
+                    error: function () {
+                        alert("An unexpected error occurred.");
+                    }
+                });
+            });
+        });
+    </script>
     <form method="post" asp-controller="Account" asp-action="Logout" asp-area="" id="logoutForm">
         @Html.AntiForgeryToken()
         <button class="btn btn-success btn-login btn-block" type="submit">Выйти из учётной записи</button>

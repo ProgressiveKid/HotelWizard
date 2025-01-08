@@ -11,6 +11,7 @@ using System.Net;
 using System.Net.Mail;
 using Spire.Pdf;
 using HotelWizard.ViewModels;
+using System;
 namespace HotelWizard.Controllers
 {
     public class HomeController : Controller
@@ -18,12 +19,14 @@ namespace HotelWizard.Controllers
         ApplicationContext db;
         private readonly IStringLocalizer<HomeController> _localizer;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IWebHostEnvironment _environment;
         public HomeController(ApplicationContext context, IStringLocalizer<HomeController> localizer,
-         IHttpContextAccessor httpContextAccessor)
+         IHttpContextAccessor httpContextAccessor, IWebHostEnvironment environment)
         {
             db = context;
             _localizer = localizer;
             _httpContextAccessor = httpContextAccessor;
+            _environment = environment;
         }
         private void SendMessage()
         {
@@ -68,12 +71,13 @@ namespace HotelWizard.Controllers
 				.Include(r => r.ImageArray) // Включить изображения для каждой комнаты
 				.ToList(); 
             List <Room> freeRooms = new List<Room>();
+
             //SendMessage();
               //!Не трогатть
             foreach (var room in listRooms)
             {  // проходися по всем комнатам
                 var listOrdersForRoom = db.Orders.Where(u => u.RoomId == room.Id).ToList();
-                bool isRoomAvailable = false;
+                bool isRoomAvailable = true;
                 foreach (var order in listOrdersForRoom)
                 { //проходимся по всем заказам текущей комнаты
                     if ((startDate >= order.endDate && endDate >= order.endDate) ||
@@ -163,6 +167,77 @@ namespace HotelWizard.Controllers
             db.Orders.Remove(order);
             db.SaveChanges();
             return Ok(user);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(Room room, List<IFormFile> images)
+        {
+            if (ModelState.IsValid)
+            {
+
+                // Проверяем, все ли изображения имеют правильное расширение
+                bool allImagesValid = images.All(image =>
+                {
+                    var fileExtension = Path.GetExtension(image.FileName).ToLower();
+                    return fileExtension == ".jpeg" || fileExtension == ".png" || fileExtension == ".jpg"; ;
+                });
+
+                if (!allImagesValid)
+                {
+                    return Json(new { success = false, error = "Только изображения форматов JPEG и PNG разрешены." });
+                }
+                if (room.PricePerNight <= 0)
+                {
+                    return Json(new { success = false, error = "Цена за ночь должна быть больше 0." });
+                }
+                // Сохраняем номер
+                db.Rooms.Add(room);
+                await db.SaveChangesAsync();
+
+                // Путь для хранения изображений
+                var roomFolder = Path.Combine(_environment.WebRootPath, "images", "Rooms", room.Id.ToString());
+
+                // Создаём папку для комнат, если её нет
+                if (!Directory.Exists(roomFolder))
+                {
+                    Directory.CreateDirectory(roomFolder);
+                }
+
+                // Сохранение изображений
+                if (images != null && images.Count > 0)
+                {
+                    int photoNumber = 1; // Нумерация изображений
+                    foreach (var image in images)
+                    {
+                        if (image.Length > 0)
+                        {
+                            // Генерируем имя файла и путь
+                            var fileName = $"{photoNumber}.jpeg";
+                            var filePath = Path.Combine(roomFolder, fileName);
+
+                            // Сохраняем файл на диск
+                            using var stream = new FileStream(filePath, FileMode.Create);
+                            await image.CopyToAsync(stream);
+
+                            // Сохраняем путь к файлу в базе данных
+                            var roomImage = new RoomImage
+                            {
+                                RoomId = room.Id,
+                                image = $"/images/Rooms/{room.Id}/{fileName}"
+                            };
+                            db.RoomImages.Add(roomImage);
+
+                            photoNumber++;
+                        }
+                    }
+
+                    await db.SaveChangesAsync();
+                }
+
+                return Json(new { success = true });
+            }
+
+            return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage) });
         }
         #endregion
     }

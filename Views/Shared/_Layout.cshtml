@@ -14,10 +14,14 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/HotelWizard.styles.css" asp-append-version="true" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <script src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.5.7/dist/sweetalert2.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.5.7/dist/sweetalert2.min.js"></script>
 </head>
 <body>
     <header>
@@ -33,7 +37,13 @@
                     <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                         <ul class="navbar-nav flex-grow-1">
                             <li class="nav-item">
-                                <a class="nav-link text-black" asp-area="" asp-controller="Home" asp-action="Index">Бронирование</a>
+                                <a class="nav-link text-black d-flex align-items-center" asp-area="" asp-controller="Home" asp-action="Index">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                                        <path d="M3 9L12 2L21 9V20H3V9Z"></path>
+                                        <path d="M9 22V12H15V22"></path>
+                                    </svg>
+                                    Бронирование
+                                </a>
                             </li>
                             @if (User.IsInRole("User"))
                              {
@@ -43,6 +53,7 @@
                             }
                             <li class="nav-user">
                                 <a class="nav-link text-black" asp-area="" asp-controller="Account" asp-action="UserOffice">
+                                    Личный кабинет
                                     <img src="/images/icon/user.png" alt="Пользователь">
                                 </a>
                             </li>
@@ -67,7 +78,8 @@
     </div>
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2023 - Coral Dreams - <a asp-area="" asp-controller="Home" asp-action="Privacy">Конфиденциальность</a>
+            &copy; 2025 - Coral Dreams - <a asp-area="" asp-controller="Home" asp-action="Privacy"></a>
+            <img src="/gif/sleep.gif" alt="GIF" style="width: 50px; height: auto; margin-left: 10px;">
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -76,6 +88,7 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)

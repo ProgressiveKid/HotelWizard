@@ -4,7 +4,6 @@ using Newtonsoft.Json;
 using System.Configuration;
 public class ApplicationContext : DbContext
 {
-    public DbSet<Reservation> Reservations { get; set; } = null!;
     public DbSet<ModelUsers> Users { get; set; } = null!;
     public DbSet<Room> Rooms { get; set; } = null!;
     public DbSet<RoomImage> RoomImages { get; set; } = null!;
@@ -14,7 +13,7 @@ public class ApplicationContext : DbContext
         if (Database.CanConnect())
         {
             //Database.EnsureDeleted();
-           // Database.EnsureCreated();
+            //Database.EnsureCreated();
         }
         else
         {

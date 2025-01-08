@@ -87,6 +87,7 @@
                     },
                     success: function (data) {
                         // Здесь вы можете обработать ответ от сервера (data)
+
                         var blogContainer = $("#blog-container"); // Получите контейнер, где будет отображаться блог
                         if (data.length != 0) {
                             blogContainer.empty(); // Очистить содержимое контейнера
@@ -98,7 +99,7 @@
                                 // Создайте элементы для заголовка, текста, информации и изображения, и вставьте данные
                                 var titleElement = $("<h2>").addClass("post-title").text(post.type);
                                 var textElement = $("<p>").addClass("post-text").text("Итоговая сумма " + post.pricePerNight * daysDiff + "$");
-                                var imageElement = $("<img>").attr("src", post.imageArray[index].image).addClass("post-image");
+                                var imageElement = $("<img>").attr("src", post.imageArray[index]?.image || "").addClass("post-image");
                                 var descriptionElement = $("<p>").addClass("post-description").text(post.description); // Добавлен класс "post-description"                                // Добавьте созданные элементы в элемент поста
                                 var prevButton = $("<button>").addClass("prev-button");
                                 var nextButton = $("<button>").addClass("next-button");
@@ -141,7 +142,20 @@
                                             idRoom: postId,
                                         },
                                         success: function (data) {
-                                            alert('Добавлено')
+                                            Swal.fire({
+                                                icon: 'success', // Тип иконки (error, success, warning, info, question)
+                                                title: 'Уведомеление',
+                                                text: 'Бронирование успешно.',
+                                                confirmButtonText: 'OK'
+                                            }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                    // Выполняем перезагрузку страницы только после того, как пользователь нажал на OK
+                                                    location.reload(); // Перезагружает текущую страницу
+                                                }
+                                            });
+                                            const audio = new Audio('/sound/ring.mp3'); // Указываем путь к аудиофайлу
+                                            audio.play(); // Воспроизводим звук
+                                            
                                             //Переход на другую страницу
                                         }
                                         // Ваша логика для смены фотографии на следующую
@@ -151,7 +165,13 @@
                         }
                         else {
                             blogContainer.empty(); // Очистить содержимое контейнера
-                            alert("Нет доступных спален");
+                            Swal.fire({
+                                icon: 'error', // Тип иконки (error, success, warning, info, question)
+                                title: 'Ошибка.',
+                                text: 'Нет доступных спален.',
+                                confirmButtonText: 'OK'
+                            });
+                        
                         }
                         console.log('Ответ от сервера:', data);
                     },

@@ -4,8 +4,18 @@ using System.Runtime.Serialization;
 
 namespace HotelWizard.Models
 {
-    public class ModelClass
+    public class Status
     {
+        [Key]
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+
+    public class CopyOfStatus
+    {
+        [Key]
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
     // Модель для представления информации о номере отеля
     public class Room
@@ -30,28 +40,13 @@ namespace HotelWizard.Models
 
         public int RoomId { get; set; }
     }
-
-    public class Room2
-    {
-        [Key]
-        public int Id { get; set; }
-        public string Number { get; set; }
-        public string Type { get; set; }
-        public string Description { get; set; }
-
-        public double PricePerNight { get; set; }
-
-        public ICollection<RoomImage> ImageArray { get; set; } = new List<RoomImage>();        //public bool IsBooked{ get; set; } // статус
-
-    }
     public class Order
     {
         [Key]
         public int Id { get; set; }
         public DateTime startDate { get; set;}
         public DateTime endDate { get; set;}
-
-       // public bool Booked { get; set; }
+        public int StatusID { get; set; }
         public int RoomId { get; set; }// Ссылка на комнату
 
         public int UserId { get; set; } // Ссылка на гостя
@@ -87,26 +82,6 @@ namespace HotelWizard.Models
         [EnumMember(Value = "User")]
         User
     }
-
-    public class Reservation
-    {
-        public int Id { get; set; }
-     
-        public int RoomId { get; set; } // Ссылка на номер отеля
-        [ForeignKey("RoomId")]
-        public Room Room { get; set; } // Навигационное свойство
-        public int GuestId { get; set; } // Ссылка на гостя
-        [ForeignKey("GuestId")]
-
-        public ModelUsers Guest { get; set; } // Навигационное свойство
-        public int CountDay { get; set; } // Навигационное свойство
-                                          //мб стартдэй и енддэй
-
-        [Column(TypeName = "decimal(18, 2)")] 
-        public decimal TotalPrice { get; set; }
-        // Другие свойства, такие как дополнительные услуги, комментарии и т. д.
-    }
-
     // Модель для представления информации о сотруднике отеля (если необходимо)
   
 
