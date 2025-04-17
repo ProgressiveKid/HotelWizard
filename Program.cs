@@ -29,6 +29,14 @@ namespace HotelWizard
                         factory.Create(typeof(SharedResource));
                 }).AddViewLocalization();
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowClient", policy =>
+                    policy.WithOrigins("https://localhost:5002") // порт клиента
+                          .AllowAnyHeader()
+                          .AllowAnyMethod());
+            });
+
 
             string connection = builder.Configuration.GetConnectionString("DefaultConnection");
           
@@ -50,7 +58,7 @@ namespace HotelWizard
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
+            app.UseCors("AllowClient");
 
             var supportedCultures = new[]
             {
