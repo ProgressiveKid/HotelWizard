@@ -78,15 +78,20 @@ namespace HotelWizard.Controllers
             return Json(freeRooms);
         }
 
+        public class OrderRequest
+        {
+            public string StartDate1 { get; set; }
+            public string EndDate1 { get; set; }
+            public int IdRoom { get; set; }
+        }
+
         [HttpPost("MakeOrder")]
         [SwaggerOperation(Description = "Метод для создания заказа на бронирование")]
-        public JsonResult MakeOrder(
-            [SwaggerParameter(Description = "Дата начала проживания")] string startDate1,
-            [SwaggerParameter(Description = "Дата окончания проживания")] string endDate1,
-            [SwaggerParameter(Description = "Идентификатор номера для бронирования")] int idRoom)
+        public async Task<JsonResult> MakeOrder(
+           [FromBody] OrderRequest orderRequest)
         {
-            DateTime startDate = DateTime.Parse(startDate1);
-            DateTime endDate = DateTime.Parse(endDate1);
+            DateTime startDate = DateTime.Parse(orderRequest.StartDate1);
+            DateTime endDate = DateTime.Parse(orderRequest.EndDate1);
             //Проверка по всем заказам на определенную дату
             //TODO сделать так чтобы можно было бранировать на дату выселения предыдщуего человека
             string mail = User.Identity.Name;
@@ -95,7 +100,7 @@ namespace HotelWizard.Controllers
             {
                 startDate = startDate,
                 endDate = endDate,
-                RoomId = idRoom,
+                RoomId = orderRequest.IdRoom,
                 UserId = user.Id
             };
             db.Orders.Add(newOrder);
@@ -125,17 +130,22 @@ namespace HotelWizard.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        public class GetInfoAboutUserRequest
+        {
+            public string nameAndId { get; set; }
+        }
+
         [HttpPost("GetInfoAboutUser")]
         [SwaggerOperation(Description = "Получение информации о пользователе")]
         [Authorize(Roles = "Admin")]
-        public JsonResult GetInfoAboutUser(string nameAndId)
+        public JsonResult GetInfoAboutUser([FromBody] GetInfoAboutUserRequest OrderRequest)
         {
             ModelUsers selectedUser = new ModelUsers
             {
-                FirstName = nameAndId.Split(' ')[0],
-                Surname = nameAndId.Split(' ')[1],
-                LastName = nameAndId.Split(' ')[2].Split('/')[0],
-                Email = nameAndId.Split(' ')[2].Split('/')[1],
+                FirstName = OrderRequest.nameAndId.Split(' ')[0],
+                Surname = OrderRequest.nameAndId.Split(' ')[1],
+                LastName = OrderRequest.nameAndId.Split(' ')[2].Split('/')[0],
+                Email = OrderRequest.nameAndId.Split(' ')[2].Split('/')[1],
             };
             ModelUsers user = db.Users.Where(u => u.Email == selectedUser.Email).FirstOrDefault();
             List<Order> listOrders = db.Orders.Where(u => u.UserId == user.Id).ToList();
@@ -148,13 +158,19 @@ namespace HotelWizard.Controllers
             };
             return Json(userOfficeViewModel);
         }
-        
+
+        public class DeleteOrderRequest
+        {
+            public int orderIdP { get; set; }
+            public string userEmailP { get; set; }
+        }
+
         [HttpPost("DeleteOrder")]
-        public IActionResult DeleteOrder(int orderIdP, string userEmailP)
+        public IActionResult DeleteOrder([FromBody] DeleteOrderRequest request)
         {
             Console.WriteLine("РАботаем");
-            ModelUsers user = db.Users.AsNoTracking().FirstOrDefault(u => u.Email == userEmailP);
-            Order order = db.Orders.FirstOrDefault(u => u.Id == orderIdP && u.UserId == user.Id);
+            ModelUsers user = db.Users.AsNoTracking().FirstOrDefault(u => u.Email == request.userEmailP);
+            Order order = db.Orders.FirstOrDefault(u => u.Id == request.orderIdP && u.UserId == user.Id);
             db.Orders.Remove(order);
             db.SaveChanges();
             return Ok(user);
@@ -168,7 +184,7 @@ namespace HotelWizard.Controllers
         /// <returns>Возвращает результат выполнения операции.</returns>
         [HttpPost("Create")]
         [SwaggerOperation(Description = "Метод для добавления новых номеров в отель с изображениями.")]
-        public async Task<IActionResult> Create(
+        public async Task<IActionResult> Create([FromForm]
         [SwaggerParameter(Description = "Информация о номере")] Room room,
         [SwaggerParameter(Description = "Список изображений для номера")] List<IFormFile> images)
         {

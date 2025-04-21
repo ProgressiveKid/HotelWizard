@@ -83,9 +83,10 @@
                     url: "@Url.Action("GetData", "Home")",
                     type: 'POST',
                     dataType: "json",
+                    contentType: "application/json",
                     data: JSON.stringify({
-                        startDate1: startDateString,
-                        endDate1: endDateString
+                        StartDate: startDateString,
+                        EndDate: endDateString
                     }),
                     success: function (data) {
                         // Здесь вы можете обработать ответ от сервера (data)
@@ -135,14 +136,15 @@
                                 });
                                 makeOrder.click(function () {
                                     $.ajax({
-                                        url: "@Url.Action("MakeOrder")",
+                                        url: "@Url.Action("MakeOrder", "Home")",
                                         type: 'POST',
+                                        contentType: "application/json",
                                         dataType: "json",
-                                        data: {
-                                            startDate1: startDateString,
-                                            endDate1: endDateString,
-                                            idRoom: postId,
-                                        },
+                                        data: JSON.stringify({
+                                            StartDate1: startDateString,
+                                            EndDate1: endDateString,
+                                            IdRoom: postId
+                                        }),
                                         success: function (data) {
                                             Swal.fire({
                                                 icon: 'success', // Тип иконки (error, success, warning, info, question)
@@ -159,6 +161,14 @@
                                             audio.play(); // Воспроизводим звук
                                             
                                             //Переход на другую страницу
+                                        },
+                                        error: function (error1) {
+                                            console.log(startDateString);
+                                            console.log(endDateString);
+                                            console.log(postId);
+
+
+                                            console.log('Произошла ошибка:', error1);
                                         }
                                         // Ваша логика для смены фотографии на следующую
                                     });

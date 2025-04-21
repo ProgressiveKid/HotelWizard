@@ -31,10 +31,11 @@
             $.ajax({
                 url: '@Url.Action("DeleteOrder", "Home")', // Replace YourControllerName with the actual name of your controller
                 type: 'POST',
-                data: {
+                contentType: "application/json",
+                data: JSON.stringify({
                     orderIdP: orderId,
                     userEmailP: userEmail
-                },
+                }),
                 success: function (response) {
                     // Handle success response
                     console.log('Order deleted successfully');
@@ -53,7 +54,11 @@
                         $.ajax({
                             url: '@Url.Action("GetInfoAboutUser", "Home")',
                             type: 'POST',
-                            data: { nameAndId: selectedValue },
+                            dataType: "json",
+                            contentType: "application/json",
+                            data: JSON.stringify({
+                                  nameAndId: String(selectedValue)
+                            }),
                             success: function (userData) {
 
                                 console.log(userData);
@@ -126,19 +131,21 @@
                                     $.ajax({
                                         url: '@Url.Action("UpdateUser", "Account")', // Replace YourControllerName with the actual name of your controller
                                         type: 'POST',
-                                        data: {
-                                            userDataP: userData,
-                                        },
+                                        contentType: "application/json",
+                                        data: JSON.stringify(userData),
                                         success: function (response) {
                                             // Handle success response
                                             Swal.fire({
                                                 icon: 'success', // Тип иконки (error, success, warning, info, question)
                                                 title: 'Message',
-                                                text: 'Order delete successfully.',
-                                                confirmButtonText: 'OK'
+                                                text: 'Пользователь успешно обновлён',
+                                                confirmButtonText: 'OK',
+                                                didClose: () => {
+                                                    // Перезагружаем страницу только после закрытия окна
+                                                    location.reload();
+                                                }
                                             });
-                                            console.log('Order deleted successfully');
-                                            location.reload();
+                                            console.log('Order update successfully');
                                         },
                                         error: function (error) {
                                             // Handle error response

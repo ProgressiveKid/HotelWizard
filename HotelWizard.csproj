@@ -27,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Models\RequestModels\" />
     <Folder Include="wwwroot\images\Landing\" />
   </ItemGroup>
 

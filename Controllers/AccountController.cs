@@ -113,7 +113,7 @@ namespace HotelWizard.Controllers
 		}
 		[HttpPost("Registration")]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Registration(RegisterViewModel userData)
+		public async Task<IActionResult> Registration([FromForm] RegisterViewModel userData)
 		{
 			if (ModelState.IsValid)
 			{
@@ -134,7 +134,7 @@ namespace HotelWizard.Controllers
 			return View(userData);
 		}
 		[HttpPost("UpdateUser")]
-		public  IActionResult UpdateUser(UserOfficeViewModel userDataP)
+		public  IActionResult UpdateUser([FromBody] UserOfficeViewModel userDataP)
 		{
 			ModelUsers user = db.Users.FirstOrDefault(u=> u.Id == userDataP.Id);
 			string [] fioComponent = userDataP.FIO.Split(' ');

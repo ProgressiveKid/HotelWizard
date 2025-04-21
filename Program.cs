@@ -119,6 +119,11 @@ namespace HotelWizard
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
+                    name: "autorisationRoute",
+                    pattern: "AutorisationF/Autorisation",
+                    defaults: new { controller = "HomeController", action = "Autorisation" });
+
+                endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
