@@ -1,6 +1,4 @@
 ﻿using HotelWizard.Models;
-using System.Drawing.Printing;
-using System.IO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,17 +7,24 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Net;
 using System.Net.Mail;
-using Spire.Pdf;
 using HotelWizard.ViewModels;
-using System;
+using Swashbuckle.AspNetCore.Annotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
+
 namespace HotelWizard.Controllers
 {
+    [ApiController]
+    [Route("[controller]")]
     public class HomeController : Controller
     {
         ApplicationContext db;
         private readonly IStringLocalizer<HomeController> _localizer;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IWebHostEnvironment _environment;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HomeController"/> class.
+        /// </summary>
         public HomeController(ApplicationContext context, IStringLocalizer<HomeController> localizer,
          IHttpContextAccessor httpContextAccessor, IWebHostEnvironment environment)
         {
@@ -28,52 +33,27 @@ namespace HotelWizard.Controllers
             _httpContextAccessor = httpContextAccessor;
             _environment = environment;
         }
-        private void SendMessage()
+        public class DateRange
         {
-            // Настройки SMTP-сервера Mail.ru
-            string smtpServer = "smtp.mail.ru"; //smpt сервер(зависит от почты отправителя)
-            int smtpPort = 587; // Обычно используется порт 587 для TLS
-            string smtpUsername = "jostonn@mail.ru"; //твоя почта, с которой отправляется сообщение
-            string smtpPassword = "123456";//пароль приложения (от почты)
-            // Создаем объект клиента SMTP
-            using (SmtpClient smtpClient = new SmtpClient(smtpServer, smtpPort))
-            {
-                // Настройки аутентификации
-                smtpClient.Credentials = new NetworkCredential(smtpUsername, smtpPassword);
-                smtpClient.EnableSsl = true;
-                using (MailMessage mailMessage = new MailMessage())
-                {
-                    mailMessage.From = new MailAddress(smtpUsername);
-                    mailMessage.To.Add("konus228@mail.ru"); // Укажите адрес получателя
-                    mailMessage.Subject = "Заголовок сообщения (тема)";
-                    mailMessage.Body = $"Текст сообщения";
-                    try
-                    {
-                        // Отправляем сообщение
-                        smtpClient.Send(mailMessage);
-                        Console.WriteLine("Сообщение успешно отправлено.");
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"Ошибка отправки сообщения: {ex.Message}");
-                    }
-                }
-            }
+            public string StartDate { get; set; }
+            public string EndDate { get; set; }
         }
-        [HttpPost]
-        public async Task<JsonResult> GetData(string startDate1, string endDate1)
+
+        [HttpPost("GetData")]
+        [SwaggerOperation(Description = "Метод для получении информации о доступных номерах на определенный период")]
+        public async Task<JsonResult> GetData(
+            [FromBody] DateRange dateRange)
         {
             //Проверка по всем заказам на определенную дату
-            DateTime startDate = DateTime.ParseExact(startDate1, "dd.MM.yyyy", CultureInfo.InvariantCulture);
-            DateTime endDate = DateTime.ParseExact(endDate1, "dd.MM.yyyy", CultureInfo.InvariantCulture);
+            DateTime startDate = DateTime.ParseExact(dateRange.StartDate, "dd.MM.yyyy", CultureInfo.InvariantCulture);
+            DateTime endDate = DateTime.ParseExact(dateRange.EndDate, "dd.MM.yyyy", CultureInfo.InvariantCulture);
             var listOrders = db.Orders.ToList();
 			var listRooms = db.Rooms
 				.Include(r => r.ImageArray) // Включить изображения для каждой комнаты
 				.ToList(); 
             List <Room> freeRooms = new List<Room>();
 
-            //SendMessage();
-              //!Не трогатть
+            //!Не трогатть
             foreach (var room in listRooms)
             {  // проходися по всем комнатам
                 var listOrdersForRoom = db.Orders.Where(u => u.RoomId == room.Id).ToList();
@@ -97,8 +77,13 @@ namespace HotelWizard.Controllers
             }
             return Json(freeRooms);
         }
-        [HttpPost]
-        public JsonResult MakeOrder(string startDate1, string endDate1, int idRoom)
+
+        [HttpPost("MakeOrder")]
+        [SwaggerOperation(Description = "Метод для создания заказа на бронирование")]
+        public JsonResult MakeOrder(
+            [SwaggerParameter(Description = "Дата начала проживания")] string startDate1,
+            [SwaggerParameter(Description = "Дата окончания проживания")] string endDate1,
+            [SwaggerParameter(Description = "Идентификатор номера для бронирования")] int idRoom)
         {
             DateTime startDate = DateTime.Parse(startDate1);
             DateTime endDate = DateTime.Parse(endDate1);
@@ -117,26 +102,31 @@ namespace HotelWizard.Controllers
             db.SaveChanges();
             return Json("Its okay");
         }
+
         [Authorize]
-		public async Task<IActionResult> Index()
+        [HttpGet("Index")]
+        public async Task<IActionResult> Index()
         {
             var rooms = await db.Rooms.ToListAsync();
             ViewData["Rooms"] = rooms;       
             return View();
         }
-		public IActionResult Privacy()
+
+        [HttpGet("Privacy")]
+        public IActionResult Privacy()
         {
             return View();
         }
+
+        [HttpGet("Error")]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-        #region UserController
-        #endregion
-        #region AdminController
-        [HttpPost]
+
+        [HttpPost("GetInfoAboutUser")]
+        [SwaggerOperation(Description = "Получение информации о пользователе")]
         [Authorize(Roles = "Admin")]
         public JsonResult GetInfoAboutUser(string nameAndId)
         {
@@ -158,7 +148,8 @@ namespace HotelWizard.Controllers
             };
             return Json(userOfficeViewModel);
         }
-        [HttpPost]
+        
+        [HttpPost("DeleteOrder")]
         public IActionResult DeleteOrder(int orderIdP, string userEmailP)
         {
             Console.WriteLine("РАботаем");
@@ -169,8 +160,17 @@ namespace HotelWizard.Controllers
             return Ok(user);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create(Room room, List<IFormFile> images)
+        /// <summary>
+        /// Создаёт новые аппартаменты в отеле
+        /// </summary>
+        /// <param name="room">Информация о номере</param>
+        /// <param name="images">Список изображений для номера</param>
+        /// <returns>Возвращает результат выполнения операции.</returns>
+        [HttpPost("Create")]
+        [SwaggerOperation(Description = "Метод для добавления новых номеров в отель с изображениями.")]
+        public async Task<IActionResult> Create(
+        [SwaggerParameter(Description = "Информация о номере")] Room room,
+        [SwaggerParameter(Description = "Список изображений для номера")] List<IFormFile> images)
         {
             if (ModelState.IsValid)
             {
@@ -239,6 +239,5 @@ namespace HotelWizard.Controllers
 
             return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage) });
         }
-        #endregion
     }
 }

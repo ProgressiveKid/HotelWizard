@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width" />
     <title>Вход</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Ваши дополнительные стили здесь -->
     <style>
         /* Добавляем отступ снизу для кнопки */
         .btn-login {
@@ -34,12 +33,11 @@
                     Авторизация
                 </h2>
                 <img src="/gif/man-chill.gif" alt="GIF" style="width: 50px; height: auto; margin-left: 10px;">
-                <form id="loginForm" asp-action="Autorisation" asp-controller="Account" method="post" asp-anti-forgery="true" class="needs-validation" novalidate autocomplete="off">
+                <form id="loginForm" method="post" class="needs-validation" novalidate autocomplete="off">
                     <div class="validation" asp-validation-summary="ModelOnly"></div>
                     <div class="form-group">
-                        <label for="Username">Почта пользователя:</label>
-                        <!--  <input id="mailLogin" type="text" class="form-control" placeholder="example&#64mail.ru" style="border-color: deepskyblue;"> -->
-                        <input asp-for="Email" type="text" placeholder="example&#64mail" style="border-color: deepskyblue;" class="form-control" required />
+                        <label for="Email">Почта пользователя:</label>
+                        <input id="Email" type="text" class="form-control" placeholder="example&#64mail" style="border-color: deepskyblue;" required />
                         <span asp-validation-for="Email" class="text-danger"></span>
                         <div class="invalid-feedback">
                             Пожалуйста, введите имя пользователя.
@@ -47,26 +45,56 @@
                     </div>
                     <div class="form-group">
                         <label for="Password">Пароль:</label>
-                        <!-- <input id = "password" type="password"  name="Password" style="border-color: deepskyblue;" class="form-control" required /> -->
-                        <input asp-for="Password" type="password" placeholder="пароль" style="border-color: deepskyblue;" class="form-control" required />
+                        <input id="Password" type="password" class="form-control" placeholder="пароль" style="border-color: deepskyblue;" required />
                         <span asp-validation-for="Password" class="text-danger"></span>
                         <div class="invalid-feedback">
                             Пожалуйста, введите пароль.
                         </div>
                     </div>
                     <div class="button-container">
-                        <button id = "loginButton" type="submit" class="btn btn-primary btn-login btn-block">Войти</button>
-                    
+                        <button id="loginButton" type="submit" class="btn btn-primary btn-login btn-block">Войти</button>
                         <a asp-action="Registration" asp-controller="Account" class="btn btn-success btn-login btn-block">Зарегистрироваться</a>
-                       
                     </div>
                 </form>
-
             </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.min.js"></script>
-    <!-- Ваши дополнительные скрипты здесь -->
+    <script>
+        // Добавляем обработчик для отправки формы через AJAX
+        document.getElementById('loginForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Предотвращаем обычную отправку формы
+
+            const formData = {
+                Email: document.getElementById('Email').value,
+                Password: document.getElementById('Password').value
+            };
+
+            // Получаем токен антифальшивки
+            const antiForgeryToken = document.querySelector('input[name="__RequestVerificationToken"]').value;
+
+            fetch('@Url.Action("Autorisation", "Account")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': antiForgeryToken // CSRF токен
+                },
+                body: JSON.stringify(formData) // Преобразуем данные формы в JSON
+            })
+                .then(response => response.json()) // Обрабатываем JSON-ответ от сервера
+                .then(data => {
+                    if (data.success) {
+                        window.location.href = data.redirectUrl; // Перенаправляем пользователя на главную страницу
+                    } else {
+                        alert(data.message || "Ошибка при авторизации"); // Показываем ошибку
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert("Произошла ошибка. Попробуйте снова.");
+                });
+        });
+    </script>
 </body>
 </html>

@@ -75,16 +75,18 @@
                 if (daysDiff == 0) daysDiff = 1;
                 $('output[name="labelDays"]').val("Количество дней: " + daysDiff);
                 let startDateString = startDate.format("DD.MM.YYYY");
+                console.log(startDateString);
                 let endDateString = endDate.format("DD.MM.YYYY");
+                console.log(endDateString);
                 //Должно быть ещё кол-во ночей
                 $.ajax({
-                    url: "@Url.Action("GetData")",
+                    url: "@Url.Action("GetData", "Home")",
                     type: 'POST',
                     dataType: "json",
-                    data: {
+                    data: JSON.stringify({
                         startDate1: startDateString,
                         endDate1: endDateString
-                    },
+                    }),
                     success: function (data) {
                         // Здесь вы можете обработать ответ от сервера (data)
 
